@@ -1,0 +1,43 @@
+
+    app.post("/user/signup",function(req,res){
+        res.json({
+            message:"signup endpoint"
+        })
+    })
+
+    app.post("/user/signin",function(req,res){
+        res.json({
+            message:"signin endpoint"
+        })
+    })
+
+    app.get("/user/purchases",function(req,res){
+        res.json({
+            message:"your course is purchased"
+        })
+    })
+
+
+    --the above is code is user routes and this is get worked when we have below code in index.json
+
+      const {createUserRoutes}=require("/routes/user")
+const {createCourseRoutes}=require("/routes/course")
+createUserRoutes(app)
+createCourseRoutes(app)
+
+app.use("/user",userRouter);
+app.use("/course",courseRouter);
+
+module.exports={
+    createUserRoutes:createUserRoutes
+}
+
+............................................................................................
+
+const express=require("express")
+const Router=express.Router;
+add 
+const {Router}=require("express");both are same
+.................................................................................../.\\
+
+
