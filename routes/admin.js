@@ -56,18 +56,42 @@ adminRouter.post("/course",adminMiddleware, async function(req,res){
     const adminId=req.userId;
 
     const{title,description,imageUrl,price,creatorId}=req.body;
-    await courseModel.create({
-        title,desciption,imageUrl,price,creatorId
+    // creating a web3 saas in 6 hours
+    const course =await courseModel.create({
+        title:title,
+        desciption:description,
+        imageUrl:imageUrl,
+        price:price,
+        creatorId:adminId
     })
 
     res.json({
-        message:"signin endpoint"
+        message:"Course created",
+        courseId:course._id
     })
 })
-adminRouter.put("/",function(req,res){
-    res.json({
-        message:"signin endpoint"
+adminRouter.put("/course",adminMiddleWare,async function(req,res){
+
+    const adminId=req.userId;
+
+    const{title,description,imageUrl,price,courseId}=req.body;
+    // creating a web3 saas in 6 hours
+    const course =await courseModel.updateOne({
+        _id:courseId
+    },{
+
+        title:title,
+        desciption:description,
+        imageUrl:imageUrl,
+        price:price,
+        creatorId:adminId
     })
+
+    res.json({
+        message:"Course updated",
+        courseId:course._id
+    })
+
 })
 adminRouter.get("/course/bulk",function(req,res){
     res.json({
@@ -76,4 +100,4 @@ adminRouter.get("/course/bulk",function(req,res){
 })
 module.exports={
     adminRouter:adminRouter
-}
+} 
