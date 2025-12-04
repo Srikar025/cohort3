@@ -1,12 +1,14 @@
 const jwt=require("jsonwebtoken");
 const {JWT_ADMIN_PASSWORD}= require("../config")
 
+console.log("🔐 ADMIN SECRET LOADED:", JWT_ADMIN_PASSWORD);
+
 
 function adminMiddleware(req,res,next){
     const token =req.headers.token;
-    const decoded=jwt.verify(token,)
+    const decoded=jwt.verify(token,JWT_ADMIN_PASSWORD)
     if(decoded){
-        req.adminId=decoded.id;
+        req.userId=decoded.id;
         next()
     }
     else{

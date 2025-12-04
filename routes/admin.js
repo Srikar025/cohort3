@@ -1,9 +1,12 @@
 const {Router}=require("express")
 const adminRouter=Router();
-const {adminModel}=require("../db");
-const jwt =require("jsonwebtoken");
-const {JWT_ADMIN_PASSWORD}= require("../config")
+const { adminModel, courseModel } = require("../db");
 
+
+
+const { adminMiddleware } = require("../middleware/admin");
+const {JWT_ADMIN_PASSWORD}= require("../config")
+const jwt =require("jsonwebtoken");
 
 adminRouter.post("/signup",async function(req,res){
     const {email,password,firstname,lastname}=req.body
@@ -48,9 +51,6 @@ adminRouter.post("/signin",async function(req,res){
 
 
 
-    res.json({
-        message:"signin endpoint"
-    })
 })
 adminRouter.post("/course",adminMiddleware, async function(req,res){
     const adminId=req.userId;
@@ -70,20 +70,21 @@ adminRouter.post("/course",adminMiddleware, async function(req,res){
         courseId:course._id
     })
 })
-adminRouter.put("/course",adminMiddleWare,async function(req,res){
+adminRouter.put("/courses",adminMiddleware,async function(req,res){
 
     const adminId=req.userId;
 
     const{title,description,imageUrl,price,courseId}=req.body;
     // creating a web3 saas in 6 hours
     const course =await courseModel.updateOne({
-        _id:courseId
+        _id:courseId,
+        creatorId:adminId
     },{
 
         title:title,
         desciption:description,
-        imageUrl:imageUrl,
         price:price,
+        imageUrl:imageUrl,
         creatorId:adminId
     })
 
@@ -93,10 +94,21 @@ adminRouter.put("/course",adminMiddleWare,async function(req,res){
     })
 
 })
-adminRouter.get("/course/bulk",function(req,res){
+adminRouter.get("/course/bulk",adminMiddleware,async function(req,res){
+    const adminId=req.userId;
+    const courses =await courseModel.find({
+
+        creatorId:adminId
+    },
+    );
+
     res.json({
-        message:"signin endpoint"
+        message:"Course updated",
+        courseId:courses
     })
+
+
+
 })
 module.exports={
     adminRouter:adminRouter
