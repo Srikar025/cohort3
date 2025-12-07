@@ -1,4 +1,5 @@
 require("dotenv").config();
+console.log("ADMIN SECRET:", process.env.JWT_ADMIN_PASSWORD);
 
 
 const express=require('express');
